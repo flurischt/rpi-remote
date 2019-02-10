@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+    <head>
+        <title>RPI-Remote</title>
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,800">
+        <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/css/bootstrap.css">
+        <link rel="stylesheet" href="/css/style.css">
+    </head>
+
+    <body>
+        <div class="h-100 d-flex justify-content-center align-items-center">
+                <button type="button" class="btn w-75 btn-primary btn-lg btn-block" id="shutdown-btn" >Shutdown Raspberry Pi</button>
+        </div>
+
+        <div class="modal" tabindex="-1" id="alert-modal" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>Modal body text goes here.</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script>
+            function updateModal(title, message) {
+                $("#alert-modal .modal-title").text(title);
+                $("#alert-modal .modal-body").text(message);
+
+            }
+            $("#shutdown-btn").on("click", function (e) {
+                let backend = "/api/shutdown";
+                $.post( backend, function() {
+                    updateModal("Success", "RPI is shutting down.");
+                })
+                  .fail(function() {
+                    updateModal("Error", "Request to " + backend + " failed");
+                  })
+                  .always(function() {
+                    $("#alert-modal").modal("toggle");
+                  });
+            });
+        </script>
+    </body>
+</html>
