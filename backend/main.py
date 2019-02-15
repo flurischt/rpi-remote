@@ -8,7 +8,7 @@ def root():
     return app.send_static_file('index.html')
 
 
-@app.route('/api/shutdown', methods=['GET', 'POST'])
+@app.route('/api/shutdown', methods=['POST'])
 def shutdown():
     import os
     import subprocess
@@ -23,4 +23,4 @@ def shutdown():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0')
