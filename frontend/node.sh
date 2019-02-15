@@ -2,7 +2,7 @@
 
 pushd "$(dirname "$0")"
 
-sudo docker run \
+docker run \
     --user node \
     --rm -it \
     -v `pwd`:/home/node/src \
