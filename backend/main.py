@@ -13,13 +13,19 @@ def shutdown():
     import os
     import subprocess
     proc = subprocess.Popen(
-        ['sudo', 'shutdown', '-h', '-t', '1'], stdout=subprocess.PIPE, preexec_fn=os.setsid
+        ['sudo', 'shutdown', '-h', '-t', '1'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        preexec_fn=os.setsid
     )  # with preexec_fn=os.setsid we disable that sudo can ask for a pw and hang forever
     (out, err) = proc.communicate()
-    if err == 0:
-        return jsonify({'status': 'success'})
+    if proc.returncode == 0:
+        status = 'success'
+        info = out
     else:
-        return jsonify({'status': 'failed', 'reason': out.decode('utf-8')}), 500
+        status = 'failed'
+        info = err
+    return jsonify({'status': status, 'info': info.decode('utf-8')})
 
 
 if __name__ == '__main__':
