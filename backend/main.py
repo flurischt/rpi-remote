@@ -13,7 +13,7 @@ def shutdown():
     import os
     import subprocess
     proc = subprocess.Popen(
-        ['sudo', 'shutdown', '-h', '-t', '1'],
+        ['sudo', 'shutdown', '-h', 'now'],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         preexec_fn=os.setsid
